@@ -2,6 +2,7 @@
 using Store.Data.Data.Contexts;
 using Store.Data.Entities;
 using Store.Repository.Interfaces;
+using Store.Repository.Specifications;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,5 +34,15 @@ namespace Store.Repository.Repository
 
         public void Delete(TEntity entity)
        => _dbContext.Remove(entity);
+
+        public async Task<IReadOnlyList<TEntity>> GetWitSpecificationAllAsync(ISpecifications<TEntity> spec)
+      => await SpecificationEvaluater<TEntity,TKey>.GetQuery(_dbContext.Set<TEntity>(),spec).ToListAsync();
+
+        public async Task<TEntity> GetWitSpecificationByIdAsync(ISpecifications<TEntity> spec)
+       => await SpecificationEvaluater<TEntity, TKey>.GetQuery(_dbContext.Set<TEntity>(), spec).FirstOrDefaultAsync();
+
+        public async Task<int> GetCountSpecificationAsy(ISpecifications<TEntity> spec)
+            => await SpecificationEvaluater<TEntity, TKey>.GetQuery(_dbContext.Set<TEntity>(), spec).CountAsync();
+
     }
 }

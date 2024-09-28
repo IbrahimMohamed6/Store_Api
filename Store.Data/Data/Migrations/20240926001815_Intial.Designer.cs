@@ -12,7 +12,7 @@ using Store.Data.Data.Contexts;
 namespace Store.Data.Data.Migrations
 {
     [DbContext(typeof(StoreDbContext))]
-    [Migration("20240924184140_Intial")]
+    [Migration("20240926001815_Intial")]
     partial class Intial
     {
         /// <inheritdoc />
@@ -36,18 +36,6 @@ namespace Store.Data.Data.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("CreatedBy")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("LastModifiedBy")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("LastModifiedOn")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -65,34 +53,19 @@ namespace Store.Data.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("BrandsId")
+                    b.Property<int>("BrandId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GETDATE()");
-
-                    b.Property<int>("CreatedBy")
-                        .HasColumnType("int");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("LastModifiedBy")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("LastModifiedOn")
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("datetime2")
-                        .HasComputedColumnSql("GETDATE()");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("VarChar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PictureUrl")
                         .IsRequired()
@@ -106,7 +79,7 @@ namespace Store.Data.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BrandsId");
+                    b.HasIndex("BrandId");
 
                     b.HasIndex("TypeId");
 
@@ -124,18 +97,6 @@ namespace Store.Data.Data.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("CreatedBy")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("LastModifiedBy")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("LastModifiedOn")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -147,9 +108,9 @@ namespace Store.Data.Data.Migrations
 
             modelBuilder.Entity("Store.Data.Entities.Product", b =>
                 {
-                    b.HasOne("Store.Data.Entities.Brands.ProductBrands", "Brands")
+                    b.HasOne("Store.Data.Entities.Brands.ProductBrands", "Brand")
                         .WithMany()
-                        .HasForeignKey("BrandsId")
+                        .HasForeignKey("BrandId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -159,7 +120,7 @@ namespace Store.Data.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Brands");
+                    b.Navigation("Brand");
 
                     b.Navigation("Type");
                 });

@@ -8,6 +8,6 @@ namespace Store.Data.Entities.Brands
 {
     public class ProductBrands:BaseEntity<int>
     {
-        public string Name { get; set; } = null!;
+        public string Name { get; set; }
     }
 }

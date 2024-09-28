@@ -1,7 +1,10 @@
-﻿using Store.Data.Entities;
+﻿using AutoMapper;
+using Store.Data.Entities;
 using Store.Data.Entities.Brands;
 using Store.Data.Entities.Type;
 using Store.Repository.Interfaces;
+using Store.Repository.Specifications.ProductPecs;
+using Store.Services.Helper;
 using Store.Services.Services.Dtos;
 using System;
 using System.Collections.Generic;
@@ -14,78 +17,54 @@ namespace Store.Services.Services.ProductServices
     public class ProductService : IProductService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public ProductService(IUnitOfWork unitOfWork)
+        public ProductService(IUnitOfWork unitOfWork,IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
 
         public async Task<IReadOnlyList<BrandTypeDetailsDto>> GetAllBrandsAsync()
         {
             var brands=await _unitOfWork.Repository<ProductBrands,int>().GetAllAsync();
-            var MabbedBrands = brands.Select(b => new BrandTypeDetailsDto
-            {
-                Id = b.Id,
-                Name = b.Name,
-                CreatedAt= b.CreatedAt,
-            }).ToList();
+            var MabbedBrands=_mapper.Map< IReadOnlyList<BrandTypeDetailsDto>>(brands);
             return MabbedBrands;
         }
 
-        public async Task<IReadOnlyList<ProductDetailsDto>> GetAllProductAsync()
+        public async Task<PaginatedResultDto<ProductDetailsDto>> GetAllProductAsync(ProductSpecification input)
         {
-            var Products= await _unitOfWork.Repository<Product,int>().GetAllAsync();
-            var MappedProduct = Products.Select(b => new ProductDetailsDto
-            {
-                Id = b.Id,
-                Name = b.Name,
-                CreatedAt= b.CreatedAt,
-                Description=b.Description,
-                Price=b.Price,
-                PictureUrl=b.PictureUrl,
-                BrandName=b.Brand.Name,
-                TypeName=b.Type.Name
-                
-            }).ToList();
-            return MappedProduct;
+            var Spec= new ProductWithSpecifications(input);
+            
+            
+            var Products= await _unitOfWork.Repository<Product,int>().GetWitSpecificationAllAsync(Spec);
+           var Countpecs=new ProductWitCountSprcification(input);
+            var Count = await _unitOfWork.Repository<Product, int>().GetCountSpecificationAsy(Countpecs);
+            var MappedProduct = _mapper.Map< IReadOnlyList < ProductDetailsDto >>(Products);
+            return new PaginatedResultDto<ProductDetailsDto>(input.PAgeDefult,input.PageSize, Count, MappedProduct);
            
         }
 
         public async Task<IReadOnlyList<BrandTypeDetailsDto>> GetAllTyoesAsync()
         {
             var Types = await _unitOfWork.Repository<ProductType, int>().GetAllAsync();
-            var MabbedTypes= Types.Select(b => new BrandTypeDetailsDto
-            {
-                Id = b.Id,
-                Name = b.Name,
-                CreatedAt = b.CreatedAt,
-            }).ToList();
+            var MabbedTypes= _mapper.Map< IReadOnlyList < BrandTypeDetailsDto >>(Types);
             return MabbedTypes;
 
         }
 
         public async Task<ProductDetailsDto> GetProductByidAsync(int? id)
-
         {
             if(id is null) 
                 throw new ArgumentNullException("Id Is Null");
+            var Specs = new ProductWithSpecifications(id);
 
-            var Product= await _unitOfWork.Repository<Product,int>().GetByIdAsync(id.Value);
+            var Product= await _unitOfWork.Repository<Product,int>().GetWitSpecificationByIdAsync(Specs);
            if(Product is null)
                 throw new ArgumentNullException("Product Not Found");
 
-            var MappedProduct = new ProductDetailsDto()
-            {
-                Id = Product.Id,
-                Name = Product.Name,
-                Description = Product.Description,
-                Price = Product.Price,
-                PictureUrl = Product.PictureUrl,
-                BrandName = Product.Brand.Name,
-                TypeName = Product.Type.Name
-
-            };
+            var MappedProduct = _mapper.Map< ProductDetailsDto > (Product);
             return MappedProduct;
         }
     }

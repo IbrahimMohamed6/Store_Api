@@ -5,6 +5,7 @@ using Store.Data.Data.Contexts;
 using Store.Repository;
 using Store.Repository.Interfaces;
 using Store.Repository.Repository;
+using Store.Services.Services.Dtos;
 using Store.Services.Services.ProductServices;
 using Store.Web.Helper;
 
@@ -25,6 +26,7 @@ namespace Store.Web
             });
             builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
             builder.Services.AddScoped<IProductService, ProductService>();
+            builder.Services.AddAutoMapper(typeof(ProductProfile));   
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();

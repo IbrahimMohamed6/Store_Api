@@ -13,8 +13,8 @@ namespace Store.Data.Data.Confiurations
     {
         public void Configure(EntityTypeBuilder<Product> builder)
         {
-            builder.Property(P => P.Name).IsRequired().HasColumnType("VarChar(50)");
-            builder.Property(D => D.CreatedAt).HasDefaultValueSql("GETDATE()");
+            //builder.Property(P => P.Name).IsRequired().HasColumnType("VarChar(50)");
+            //builder.Property(D => D.CreatedAt).HasDefaultValueSql("GETDATE()");
         }
     }
 }

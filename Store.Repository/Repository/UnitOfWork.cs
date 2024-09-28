@@ -19,10 +19,11 @@ namespace Store.Repository.Repository
       =>await _dbContext.SaveChangesAsync();
         public IGenericRepository<TEntity, TKey> Repository<TEntity, TKey>() where TEntity : BaseEntity<TKey>
         {
-            if( _Repositories == null )
+            if( _Repositories is null )
                 _Repositories = new Hashtable();
 
             var EntityKey=typeof(TEntity).Name;
+
             if(!_Repositories.ContainsKey(EntityKey))
             {
                 var RepositoryType=typeof(GenericRepository<,>);

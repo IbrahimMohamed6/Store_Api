@@ -10,7 +10,7 @@ namespace Store.Data.Entities
     {
         [Required(ErrorMessage ="Name Is Requierd Ya Hamada")]
         public string Name { get; set; }=null!;
-        public string? Description { get; set; }
+        public string Description { get; set; }
         [Required(ErrorMessage = "Price Is Requierd Ya Hamada")]
 
         public decimal Price { get; set; }
