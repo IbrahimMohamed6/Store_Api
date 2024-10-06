@@ -2,13 +2,9 @@
 using Store.Data.Data.Contexts;
 using Store.Data.Entities;
 using Store.Data.Entities.Brands;
+using Store.Data.Entities.DelivtyMethods;
 using Store.Data.Entities.Type;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace Store.Repository
 {
@@ -43,6 +39,16 @@ namespace Store.Repository
 
                     if (Products is not null)
                         await Context.Products.AddRangeAsync(Products);
+
+                }
+
+                if (Context.DeliveryMethod is not null && !Context.DeliveryMethod.Any())
+                {
+                    var Delivery = File.ReadAllText("../Store.Repository/SeedData/delivery.json");
+                    var Deleverirs = JsonSerializer.Deserialize<List<DeliveryMethods>>(Delivery);
+
+                    if (Deleverirs is not null)
+                        await Context.DeliveryMethod.AddRangeAsync(Deleverirs);
 
                 }
                 await Context.SaveChangesAsync();   

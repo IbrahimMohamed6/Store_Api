@@ -1,8 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Store.Repository.BasketRepository;
 using Store.Repository.Interfaces;
 using Store.Repository.Repository;
 using Store.Services.CachService;
 using Store.Services.HandleResponse;
+using Store.Services.Services.BasketService;
+using Store.Services.Services.BasketService.Dtos;
 using Store.Services.Services.Dtos;
 using Store.Services.Services.ProductServices;
 
@@ -14,9 +17,11 @@ namespace Store.Web.Extinsions
         {
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IProductService, ProductService>();
-            services.AddScoped<ICachService, ICachService>();
+            services.AddScoped<ICachService, CaheService>();
+            services.AddScoped<IBasketService, BasketServices>();
+            services.AddScoped<IBasketRepository, BasketRepo>();
             services.AddAutoMapper(typeof(ProductProfile));
-
+            services.AddAutoMapper(typeof(BasketProfile));
             services.Configure<ApiBehaviorOptions>(options =>
             {
                 options.InvalidModelStateResponseFactory = actioncontext =>

@@ -1,0 +1,17 @@
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Store.Data.Entities.Identity
+{
+    public class Address
+    {
+        public long Id { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string City { get; set; }
+        public string Streate { get; set; }
+        public string PostalCode { get; set; }
+        [Required]
+        public string AppUserId { get; set; }
+        public AppUser AppUser { get; set; }
+    }
+}
