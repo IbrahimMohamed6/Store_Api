@@ -7,6 +7,8 @@ using Store.Services.HandleResponse;
 using Store.Services.Services.BasketService;
 using Store.Services.Services.BasketService.Dtos;
 using Store.Services.Services.Dtos;
+using Store.Services.Services.OrderServices;
+using Store.Services.Services.OrderServices.Dto;
 using Store.Services.Services.ProductServices;
 using Store.Services.Services.TokenService;
 using Store.Services.Services.UserServices;
@@ -23,10 +25,12 @@ namespace Store.Web.Extinsions
             services.AddScoped<IBasketService, BasketServices>();
             services.AddScoped<ITokenServices, TokenServices>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IOrderService, OrderService>();
 
             services.AddScoped<IBasketRepository, BasketRepo>();
             services.AddAutoMapper(typeof(ProductProfile));
             services.AddAutoMapper(typeof(BasketProfile));
+            services.AddAutoMapper(typeof(OrderProfile));
             services.Configure<ApiBehaviorOptions>(options =>
             {
                 options.InvalidModelStateResponseFactory = actioncontext =>
