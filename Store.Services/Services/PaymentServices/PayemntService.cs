@@ -6,14 +6,8 @@ using Store.Repository.Interfaces;
 using Store.Repository.Specifications.OrderSpecification;
 using Store.Services.Services.BasketService;
 using Store.Services.Services.BasketService.Dtos;
-using Store.Services.Services.Dtos;
 using Store.Services.Services.OrderServices.Dto;
 using Stripe;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Store.Services.Services.PaymentServices
 {

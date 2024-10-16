@@ -9,6 +9,7 @@ using Store.Services.Services.BasketService.Dtos;
 using Store.Services.Services.Dtos;
 using Store.Services.Services.OrderServices;
 using Store.Services.Services.OrderServices.Dto;
+using Store.Services.Services.PaymentServices;
 using Store.Services.Services.ProductServices;
 using Store.Services.Services.TokenService;
 using Store.Services.Services.UserServices;
@@ -26,7 +27,7 @@ namespace Store.Web.Extinsions
             services.AddScoped<ITokenServices, TokenServices>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IOrderService, OrderService>();
-
+            services.AddScoped<IPayemntService, PayemntService>();
             services.AddScoped<IBasketRepository, BasketRepo>();
             services.AddAutoMapper(typeof(ProductProfile));
             services.AddAutoMapper(typeof(BasketProfile));

@@ -1,4 +1,4 @@
-using Microsoft.EntityFrameworkCore;
+ using Microsoft.EntityFrameworkCore;
 using StackExchange.Redis;
 using Store.Data.Data.Contexts;
 using Store.Web.Extinsions;
@@ -34,6 +34,13 @@ namespace Store.Web
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerDocumention();
+            builder.Services.AddCors(Options =>
+            {
+                Options.AddPolicy("CorsPolicy", Policy =>
+                {
+                    Policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http:localhost:4200");
+                });
+            });
             var app = builder.Build();
             await ApplaySeeding.ApplaySeedingAsync(app);
 
@@ -46,6 +53,7 @@ namespace Store.Web
             app.UseMiddleware<ExceptionMiddleWare>();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseCors("CorsPolicy");
             app.UseAuthentication();
             app.UseAuthorization();
 
